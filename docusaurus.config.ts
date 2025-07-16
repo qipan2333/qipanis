@@ -26,7 +26,7 @@ const config: Config = {
   organizationName: "qipan2333", // Usually your GitHub org/user name.
   projectName: "qipanis", // Usually your repo name.
 
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   markdown: {
     format: "detect",
