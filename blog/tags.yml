@@ -1,0 +1,19 @@
+ai:
+  label: AI
+  permalink: /ai
+  description: AI technologies and implementations
+
+travel:
+  label: Travel
+  permalink: /travel
+  description: Travel adventures and experiences
+
+photography:
+  label: Photography
+  permalink: /photography
+  description: Photography
+
+dev:
+  label: Development
+  permalink: /dev
+  description: Development related posts
