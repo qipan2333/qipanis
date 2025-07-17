@@ -1,7 +1,7 @@
 ## Precontidions
-1. [Install the keycloak](@site/docs/notes/others/Keycloak/02-ArgoWorkflow SSO on Keycloak.md)
+1. [Install the keycloak](/docs/notes/others/Keycloak/Install)
 
-## Creating a new client in Keycloak
+## Creat a new client in Keycloak
 First we need to setup a new client.
 
 
@@ -18,12 +18,12 @@ Configure the client by setting the **Root URL**, **Web origins**, **Admin URL**
 
 Make sure to click **Save**.
 
-## Configuring the groups claim
+## Configure the groups claim
 In order for ArgoWorkflow to provide the groups the user is in we need to configure a groups claim that can be included in the authentication token.
 
 To do this we'll start by creating a new **Client Scope** called _groups_.
 
-![](./imgs/argoworkflow-sso-3.png)
+![](./imgs/argoworkflow-sso-4.png)
 
 Once you've created the client scope you can now add a Token Mapper which will add the groups claim to the token when the client requests the groups scope.
 
@@ -33,7 +33,7 @@ Make sure to set the **Name** as well as the **Token Claim Name** to _groups_. A
 
 ![](./imgs/argoworkflow-sso-5.png)
 
-We can now configure the client to provide the _groups_ scope.
+## Configure the client to provide the _groups_ scope
 
 Go back to the client we've created earlier and go to the Tab "Client Scopes".
 
@@ -43,7 +43,7 @@ If you put it in the Optional category you will need to make sure that ArgoCD re
 
 ![](./imgs/argoworkflow-sso-6.png)
 
-## Installing Argoworkflow with SSO
+## Install Argoworkflow with SSO
 Copy the client-id and client-secret of argo-workflow-server.
 
 ![](./imgs/argoworkflow-sso-7.png)
