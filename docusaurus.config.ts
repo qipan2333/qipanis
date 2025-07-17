@@ -105,7 +105,7 @@ const config: Config = {
     navbar: {
       // title: 'qipan2333',
       logo: {
-        src: "/img/ChatGPT Image Jun 28, 2025, 04_41_42 PM.png",
+        src: "/img/wangye.png",
         style: {
           "border-radius": "50%",
         },
@@ -129,11 +129,11 @@ const config: Config = {
           className: "header-github-link",
           position: "right",
         },
-        {
-          href: "https://www.linkedin.com/in/qipan2333/",
-          className: "header-linkedin-link",
-          position: "right",
-        },
+        // {
+        //   href: "https://www.linkedin.com/in/qipan2333/",
+        //   className: "header-linkedin-link",
+        //   position: "right",
+        // },
       ],
     },
     footer: {
@@ -146,13 +146,13 @@ const config: Config = {
               label: "GitHub",
               href: "https://github.com/qipan2333",
             },
-            {
-              label: "LinkedIn",
-              href: "https://www.linkedin.com/in/qipan2333/",
-            },
+            // {
+            //   label: "LinkedIn",
+            //   href: "https://www.linkedin.com/in/qipan2333/",
+            // },
             {
               label: "Email",
-              href: "qipan2333@163.com",
+              href: "qp_happyman@163.com",
             },
           ],
         },
