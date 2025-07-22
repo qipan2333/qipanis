@@ -239,6 +239,74 @@ This ultimately results in the browser being redirected to the root of the oauth
 ![](./imgs/ingress-keycloak-9.png)
 ![](./imgs/ingress-keycloak-10.png)
 
+According to OAuth2-proxy Source Code, the **cookie in Callback Request is empty**. The callback request in browser had the oauth2_proxy cookie(see the sixth image at https://github.com/oauth2-proxy/oauth2-proxy/issues/3124), so the cookie must be lost in the middle of the process. 
+
+```go title="OAuth2-proxy Source Code"
+func (p *OAuthProxy) OAuthCallback(rw http.ResponseWriter, req *http.Request) {
+	remoteAddr := ip.GetClientString(p.realClientIPParser, req, true)
+
+	// finish the oauth cycle
+	err := req.ParseForm()
+	if err != nil {
+		logger.Errorf("Error while parsing OAuth2 callback: %v", err)
+		p.ErrorPage(rw, req, http.StatusInternalServerError, err.Error())
+		return
+	}
+	errorString := req.Form.Get("error")
+	if errorString != "" {
+		logger.Errorf("Error while parsing OAuth2 callback: %s", errorString)
+		message := fmt.Sprintf("Login Failed: The upstream identity provider returned an error: %s", errorString)
+		// Set the debug message and override the non debug message to be the same for this case
+		p.ErrorPage(rw, req, http.StatusForbidden, message, message)
+		return
+	}
+
+	nonce, appRedirect, err := decodeState(req.Form.Get("state"), p.encodeState)
+	if err != nil {
+		logger.Errorf("Error while parsing OAuth2 state: %v", err)
+		p.ErrorPage(rw, req, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	// calculate the cookie name
+	cookieName := cookies.GenerateCookieName(p.CookieOptions, nonce)
+	// Try to find the CSRF cookie and decode it
+	csrf, err := cookies.LoadCSRFCookie(req, cookieName, p.CookieOptions)
+	if err != nil {
+		// There are a lot of issues opened complaining about missing CSRF cookies.
+		// Try to log the INs and OUTs of OAuthProxy, to be easier to analyse these issues.
+		LoggingCSRFCookiesInOAuthCallback(req, cookieName)
+		logger.Println(req, logger.AuthFailure, "Invalid authentication via OAuth2: unable to obtain CSRF cookie: %s (state=%s)", err, nonce)
+		p.ErrorPage(rw, req, http.StatusForbidden, err.Error(), "Login Failed: Unable to find a valid CSRF token. Please try again.")
+		return
+	}
+    ...
+}
+// LoggingCSRFCookiesInOAuthCallback Log all CSRF cookies found in HTTP request OAuth callback,
+// which were successfully parsed
+func LoggingCSRFCookiesInOAuthCallback(req *http.Request, cookieName string) {
+	cookies := req.Cookies()
+	if len(cookies) == 0 {
+		logger.Println(req, logger.AuthFailure, "No cookies were found in OAuth callback.")
+		return
+	}
+
+	for _, c := range cookies {
+		if cookieName == c.Name {
+			logger.Println(req, logger.AuthFailure, "CSRF cookie %s was found in OAuth callback.", c.Name)
+			return
+		}
+
+		if strings.HasSuffix(c.Name, "_csrf") {
+			logger.Println(req, logger.AuthFailure, "CSRF cookie %s was found in OAuth callback, but it is not the expected one (%s).", c.Name, cookieName)
+			return
+		}
+	}
+
+	logger.Println(req, logger.AuthFailure, "Cookies were found in OAuth callback, but none was a CSRF cookie.")
+}
+```
+
 ## Reference
 1. [Ingress_Nginx External OAUTH](https://kubernetes.github.io/ingress-nginx/examples/auth/oauth-external-auth/)
 2. [ingess-nginx-oauth2-proxy.yaml: a demo of auth via github](https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/docs/examples/auth/oauth-external-auth/oauth2-proxy.yaml)
