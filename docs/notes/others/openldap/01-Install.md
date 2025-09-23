@@ -94,9 +94,9 @@
     ```
 
 3.  check  
-  ```bash
-  podman run --rm --network=host \
-  m.daocloud.io/docker.io/library/ubuntu:latest \
-  bash -c \
-  "apt update && apt install -y ldap-utils; ldapsearch -x -H ldap://localhost:31389 -D 'cn=admin,dc=geekcity,dc=tech' -w admin123 -b 'dc=geekcity,dc=tech' 'uid=test001'"
-  ```
+    ```bash
+    podman run --rm --network=host \
+    m.daocloud.io/docker.io/library/ubuntu:latest \
+    bash -c \
+    "apt update && apt install -y ldap-utils; ldapsearch -x -H ldap://localhost:31389 -D 'cn=admin,  dc=geekcity,dc=tech' -w admin123 -b 'dc=geekcity,dc=tech' 'uid=test001'"
+    ```
