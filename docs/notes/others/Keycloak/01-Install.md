@@ -3,8 +3,11 @@
 1.  Prepare `keycloak-values.yaml`
 
     ```yaml
+    global:
+      security:
+        allowInsecureImages: true
     production: true
-    proxy: edge      # For SSL offloading with Ingress
+    proxy: edge      # 配合 Ingress 做 SSL offloading
     image:
       registry: m.lab.zverse.space/docker.io
       pullPolicy: IfNotPresent
@@ -35,18 +38,22 @@
       image:
         registry: m.lab.zverse.space/docker.io
         pullPolicy: IfNotPresent
+      auth:
+        postgresPassword: "123456"
+        password: "123456"
     ```
 
 2.  apply
 
-    ```yaml
+    ```bash
     helm repo add bitnami https://charts.bitnami.com/bitnami
 
-    helm install keycloak bitnami/keycloak \
+    helm install keycloak bitnami/keycloak --version 24.7.5 \
       --namespace keycloak \
       --create-namespace \
       --atomic \
-      -f keycloak-values.yaml --debug
+      --debug \
+      -f keycloak-values.yaml
     ```
 
 3.  check  
@@ -108,10 +115,13 @@ spec:
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: keycloak
-    targetRevision: 22.0.0
+    targetRevision: 24.7.5
     helm:
       releaseName: keycloak
       values: |
+        global:
+          security:
+            allowInsecureImages: true
         production: true
         proxy: edge      # For SSL offloading with Ingress
         image:
