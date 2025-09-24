@@ -58,9 +58,16 @@
 
 3.  check  
   Access https://keycloak.astronomy.zhejianglab.com:32443 in the browser with username "admin" and password "admin".
-  ![keycloak login page](/assets/img/doc.notes.others.keycloak/keycloak-login.png)
+  ![keycloak login page](./imgs/keycloak-login.png)
   Keycloak works correctly if the login page redirects to this page:
-  ![keycloak logged](/assets/img/doc.notes.others.keycloak/keycloak-logged.png)
+  ![keycloak logged](./imgs/keycloak-logged.png)
+
+4. git init some important config  
+  :::warning
+  Keycloak use client `account-console` to provide account mamnage page for users. There is a Web origin need   to be added at `account-console` setting page, otherwise, 403 will be returned when  `account manage`   button is clicked.
+  :::
+  ![](./imgs/keycloak-account-console-1.png)
+  ![](./imgs/keycloak-account-console-2.png)
 
 ## Configuration and Parameter Explanation
 
@@ -71,7 +78,7 @@ proxy: edge
 ```
 
 From [https://github.com/bitnami/charts/blob/main/bitnami/keycloak/README.md\#use-with-ingress-offloading-ssl](https://github.com/bitnami/charts/blob/main/bitnami/keycloak/README.md#use-with-ingress-offloading-ssl), the description in the document is:
-![proxy: edge](/assets/img/doc.notes.others.keycloak/edge.png)
+![proxy: edge](./imgs/edge.png)
 
 ### (TODO)Initial administrator account and password configuration
 
