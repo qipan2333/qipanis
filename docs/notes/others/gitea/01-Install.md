@@ -179,3 +179,6 @@
 ```
 argocd app delete -y argocd/application-gitea
 ```
+
+## References
+1. https://docs.gitea.com/administration/config-cheat-sheet

@@ -57,3 +57,6 @@ Make sure to click **Save**.
    ![](./imgs/gitea-keycloak-13.png)
 5. Using the user `gitea_admin_user` for single sign-on(keycloak), you will find that this user has admin privileges
    ![](./imgs/gitea-keycloak-14.png)
+
+## References
+1. https://zenn.dev/zenogawa/articles/gitea_keycloak
